@@ -1,31 +1,48 @@
 import React, { Component } from 'react'
 
+import store from '../../redux/store'
+
 export default class Count extends Component {
 
-  state = {sum: 0}
+  // state = {sum: 0}
 
+
+  componentDidMount(){
+    // this can monitoring the redux's state, store.subscribe() will call the call-back 
+    // function while the redux's state is changing.
+    store.subscribe(()=>{
+      this.setState({})  // This can call this.render(), to render() the page. 
+    })
+  }
+  
   add = ()=>{
     const {value} = this.selectNum
-    const {sum} = this.state
-    this.setState({sum: value-0+sum})
+    // const {sum} = this.state
+    // this.setState({sum: value-0+sum})
+    store.dispatch({type: 'add', data: value-0})
+    // this.setState({})
   }
   minus = ()=>{
     const {value} = this.selectNum
-    const {sum} = this.state
-    this.setState({sum: sum-value})
+    // const {sum} = this.state
+    // this.setState({sum: sum-value})
+    store.dispatch({type: 'minus', data: value})
   }
   addWhileOdd = ()=>{
     const {value} = this.selectNum
-    const {sum} = this.state
+    const sum = store.getState()
+    // const {sum} = this.state
     if (sum%2){
-      this.setState({sum: sum+value*1})
+      store.dispatch({type: 'add', data: value-0})
+      // this.setState({sum: sum+value*1})
     }
   }
   addWithAsync = ()=>{
     const {value} = this.selectNum
-    const {sum} = this.state
+    // const {sum} = this.state
     setTimeout(() => {
-      this.setState({sum: sum+value*1})
+      store.dispatch({type: 'add', data: value-0})
+      // this.setState({sum: sum+value*1})
     }, 500);
   }
 
@@ -33,7 +50,7 @@ export default class Count extends Component {
   render() {
     return (
       <div>
-        <h1>Current the Sum is: {this.state.sum}</h1>&nbsp;
+        <h1>Current the Sum is: {store.getState()}</h1>&nbsp;
         <select ref={c => this.selectNum = c}>
             <option value="1">1</option>
             <option value="2">2</option>
