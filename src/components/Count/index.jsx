@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 
-import store from '../../redux/store'
+// import store from '../../redux/store'
 
-import { createAddAction, 
-    createMinusAction, 
-    createAddAsyncAction } from '../../redux/sum_action'
+// import { createAddAction, 
+//     createMinusAction, 
+//     createAddAsyncAction } from '../../redux/sum_action'
 
-export default class Count extends Component {
+export default class CountUI extends Component {
 
   // state = {sum: 0}
 
@@ -21,29 +21,36 @@ export default class Count extends Component {
   
   add = ()=>{
     const {value} = this.selectNum
+    console.log('ui')
     // const {sum} = this.state
     // this.setState({sum: value-0+sum})
-    store.dispatch(createAddAction(value-0))
+    // store.dispatch(createAddAction(value-0))
     // this.setState({})
+    this.props.add(value-0)
   }
   minus = ()=>{
     const {value} = this.selectNum
     // const {sum} = this.state
     // this.setState({sum: sum-value})
-    store.dispatch(createMinusAction(value))
+    // store.dispatch(createMinusAction(value))
+    this.props.minus(value)
   }
   addWhileOdd = ()=>{
     const {value} = this.selectNum
-    const sum = store.getState()
+    // const sum = store.getState()
+    const sum = this.props.count
+    // console.log(this.props.count)
     // const {sum} = this.state
     if (sum%2){
-      store.dispatch(createAddAction(value-0))
+      // store.dispatch(createAddAction(value-0))
+      this.props.add(value-0)
       // this.setState({sum: sum+value*1})
     }
   }
   addWithAsync = ()=>{
     const {value} = this.selectNum
-    store.dispatch(createAddAsyncAction(value-0, 500))
+    this.props.async(value-0, 500)
+    // store.dispatch(createAddAsyncAction(value-0, 500))
     // const {sum} = this.state
     // setTimeout(() => {
     //   store.dispatch(createAddAction(value-0))
@@ -55,7 +62,7 @@ export default class Count extends Component {
   render() {
     return (
       <div>
-        <h1>Current the Sum is: {store.getState()}</h1>&nbsp;
+        <h1>Current the Sum is: {this.props.count}</h1>&nbsp;
         <select ref={c => this.selectNum = c}>
             <option value="1">1</option>
             <option value="2">2</option>
